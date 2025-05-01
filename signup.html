@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>{{ auth_title }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      height: 100%;
+      background: url("{{ url_for('static', filename='signup-bg.png') }}") no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.92);
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.2);
+      width: 360px;
+      max-width: 90%;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #1e293b;
+      text-align: center;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+      background-color: #f9fafb;
+    }
+
+    .password-wrapper {
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .password-wrapper input {
+      padding-right: 60px;
+    }
+
+    .toggle-eye {
+      position: absolute;
+      top: 50%;
+      right: 12px;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #3b82f6;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    input[type="submit"] {
+      width: 100%;
+      background-color: #3b82f6;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #2563eb;
+    }
+
+    .back-button {
+      display: block;
+      width: fit-content;
+      margin: 20px auto 0;
+      background-color: #1e40af;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .back-button:hover {
+      background-color: #1e3a8a;
+    }
+
+    .switch {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .switch a {
+      color: #3b82f6;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .switch a:hover {
+      text-decoration: underline;
+    }
+
+    .error {
+      color: red;
+      text-align: center;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 500px) {
+      .container {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>{{ auth_title }}</h2>
+    <form method="POST" action="{{ form_action }}" onsubmit="return validatePasswords();">
+      <input type="text" name="fullname" placeholder="Full Name" required>
+      <input type="email" name="email" placeholder="Email Address" required>
+      <input type="text" name="username" placeholder="Username" required>
+
+      <div class="password-wrapper">
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="Create Password"
+          required
+          pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+          title="Must contain at least 8 characters, one letter, one number, and one special character."
+        >
+        <button type="button" class="toggle-eye" onclick="togglePassword('password', this)">Show</button>
+      </div>
+
+      <div class="password-wrapper">
+        <input
+          type="password"
+          name="confirm"
+          id="confirm"
+          placeholder="Confirm Password"
+          required
+        >
+        <button type="button" class="toggle-eye" onclick="togglePassword('confirm', this)">Show</button>
+      </div>
+
+      <input type="submit" value="Register">
+    </form>
+
+    <!-- ✅ Back to Login Button -->
+    <a href="{{ url_for('login') }}" class="back-button">← Back to Login</a>
+
+    <div class="switch">
+      <p>{{ auth_switch_text }} <a href="{{ auth_switch_link }}">{{ auth_switch_action }}</a></p>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="error">
+          {% for msg in messages %}
+            <p>{{ msg }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  <script>
+    function togglePassword(fieldId, el) {
+      const input = document.getElementById(fieldId);
+      if (input.type === "password") {
+        input.type = "text";
+        el.textContent = "Hide";
+      } else {
+        input.type = "password";
+        el.textContent = "Show";
+      }
+    }
+
+    function validatePasswords() {
+      const password = document.getElementById('password').value;
+      const confirm = document.getElementById('confirm').value;
+      if (password !== confirm) {
+        alert("Passwords do not match.");
+        return false;
+      }
+      return true;
+    }
+  </script>
+
+</body>
+</html>

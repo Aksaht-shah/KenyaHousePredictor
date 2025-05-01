@@ -1,0 +1,24 @@
+<!doctype html>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+<html>
+<head><title>Model Status</title></head>
+<body>
+  <div class="banner">
+    <img src="{{ url_for('static', filename='hero.jpg') }}" alt="Header Image">
+</div>
+
+  <h2>ML Model Status</h2>
+  {% if model_exists %}
+    <p>Model is available ✅</p>
+    {% if metrics %}
+      <p>Last Trained: {{ metrics.timestamp }}</p>
+      <p>RMSE: {{ metrics.rmse }}</p>
+      <p>R² Score: {{ metrics.r2 }}</p>
+    {% endif %}
+  {% else %}
+    <p>No trained model found ❌</p>
+  {% endif %}
+  <p><a href="/">Back to Dashboard</a></p>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Train Model</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f1f5f9;
+      color: #1f2937;
+    }
+
+    .banner img {
+      width: 100%;
+      height: auto;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #1e3a8a;
+    }
+
+    label {
+      display: block;
+      margin-top: 20px;
+      font-weight: 600;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 16px;
+      background-color: #f8fafc;
+    }
+
+    button {
+      margin-top: 30px;
+      width: 100%;
+      padding: 12px;
+      background-color: #3b82f6;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #2563eb;
+    }
+
+    .flash-messages {
+      margin-top: 20px;
+      background-color: #fff3cd;
+      border-left: 4px solid #ffeeba;
+      padding: 12px 20px;
+      border-radius: 8px;
+      color: #856404;
+      font-size: 15px;
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="banner">
+    <img src="{{ url_for('static', filename='hero.jpg') }}" alt="Header Image">
+  </div>
+
+  <div class="container">
+    <h2>Train ML Model</h2>
+    <form method="post">
+      <label for="model_type">Model Type:</label>
+      <select name="model_type" id="model_type">
+        <option value="xgboost">XGBoost</option>
+        <option value="random_forest">Random Forest</option>
+        <option value="linear">Ridge (Linear)</option>
+      </select>
+
+      <label for="n_estimators">Number of Estimators:</label>
+      <input type="number" name="n_estimators" id="n_estimators" value="200">
+
+      <label for="learning_rate">Learning Rate:</label>
+      <input type="number" step="0.01" name="learning_rate" id="learning_rate" value="0.05">
+
+      <button type="submit">Train</button>
+    </form>
+
+    <a class="back-link" href="/">&larr; Back to Dashboard</a>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash-messages">
+          <ul>
+            {% for msg in messages %}<li>{{ msg }}</li>{% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+    {% endwith %}
+  </div>
+</body>
+</html>

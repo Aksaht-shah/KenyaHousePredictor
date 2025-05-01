@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Suggest a City</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f9ff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      width: 400px;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 1rem;
+    }
+
+    .result {
+      text-align: center;
+      font-size: 1.3rem;
+      margin-top: 1rem;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Suggest a City</h2>
+    <form method="POST">
+      <label>Bedrooms</label>
+      <input type="number" name="bedrooms" required>
+
+      <label>Bathrooms</label>
+      <input type="number" name="bathrooms" required>
+
+      <button type="submit">Suggest</button>
+    </form>
+
+    {% if suggestion %}
+      <div class="result">
+        🏙️ Suggested City: <strong>{{ suggestion }}</strong>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>

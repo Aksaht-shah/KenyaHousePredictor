@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Smart Assets – Predict Price</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- ✅ Use external style.css -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="predict-page">
+  <div class="form-container">
+    <h1>Smart Assets</h1>
+    <p class="subtitle">Predict property prices with AI</p>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash">
+          {% for message in messages %}
+            {{ message }}
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% if prediction %}
+      <div class="price-result">Estimated Price: KES {{ prediction }}</div>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('predict') }}">
+      <label for="location">Location</label>
+      <select name="location" required>
+        <option value="">Select a location</option>
+        {% for location in locations %}
+          <option value="{{ location }}">{{ location }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="property_type">Property Type</label>
+      <select name="property_type" required>
+        <option value="">Select property type</option>
+        {% for pt in property_types %}
+          <option value="{{ pt }}">{{ pt }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="city">City</label>
+      <select name="city" required>
+        <option value="">Select city</option>
+        {% for city in cities %}
+          <option value="{{ city }}">{{ city }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="bedrooms">Bedrooms</label>
+      <input type="number" name="bedrooms" required min="1" placeholder="Enter number of bedrooms" />
+
+      <label for="bathrooms">Bathrooms</label>
+      <input type="number" name="bathrooms" required min="1" placeholder="Enter number of bathrooms" />
+
+      <label for="size">Size (sqft)</label>
+      <input type="number" name="size" required min="100" placeholder="Enter property size in sqft" />
+
+      <button type="submit">Predict Price</button>
+    </form>
+
+    <a href="{{ url_for('dashboard') }}" class="back-link">&larr; Back to Dashboard</a>
+  </div>
+</body>
+</html>
